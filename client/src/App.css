@@ -15,24 +15,28 @@
 
 .sidebar-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   width: 25%;
   height: 100vh;
+  border-right: 1px solid rgba(0, 0, 0, 0.2);
   /* background-color: red; */
 }
 
 .sidebar-logo-container {
   height: 15%;
-  width: 100%;
+  width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;
   justify-content: space-between;
   margin: 40px;
   user-select: none;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .sidebar-title {
-  font-size: 20px;
+  font-size: 18px;
   width: 65%;
 }
 
@@ -42,4 +46,34 @@
 
 .sidebar {
   width: 45%;
+}
+
+.sidebar-button-container {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 25px;
+}
+
+.button.selected {
+  background-color: black;
+  color: white;
+}
+
+.button {
+  background-color: white;
+  color: black;
+  width: 80%;
+  height: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  gap: 1em;
+}
+
+.button .icon {
+  width: 18px;
+  height: 18px;
 }
