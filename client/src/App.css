@@ -29,10 +29,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   margin: 40px;
   user-select: none;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  padding: 15px;
 }
 
 .sidebar-title {
@@ -50,10 +51,12 @@
 
 .sidebar-button-container {
   width: 80%;
+  height: 60%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 25px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }
 
 .button.selected {
