@@ -1,10 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import logoSVG from "../assets/fuel-pump-fill.svg";
 import CalculatorIcon from "../assets/calculator-fill.svg?react";
 import VehicleIcon from "../assets/car-front-fill.svg?react";
 import StatisticsIcon from "../assets/graph-up-arrow.svg?react";
 
 function Sidebar() {
+  const [activePage, setActivePage] = useState("calculator");
+
+  function handlePageClick(pageName) {
+    setActivePage(pageName);
+  }
+
   return (
     <div className="sidebar-container">
       <div className="sidebar-logo-container">
@@ -16,15 +22,24 @@ function Sidebar() {
         </div>
       </div>
       <div className="sidebar-button-container">
-        <div className="sidebar-calculator button selected">
+        <div
+          className={`sidebar-calculator button ${activePage === "calculator" ? "selected" : ""}`}
+          onClick={() => handlePageClick("calculator")}
+        >
           <CalculatorIcon className="icon"></CalculatorIcon>
           <p>Calculator</p>
         </div>
-        <div className="sidebar-stats button">
+        <div
+          className={`sidebar-stats button ${activePage === "statistics" ? "selected" : ""}`}
+          onClick={() => handlePageClick("statistics")}
+        >
           <StatisticsIcon className="icon"></StatisticsIcon>
           <p>Statistics</p>
         </div>
-        <div className="sidebar-vehicles button">
+        <div
+          className={`sidebar-vehicles button ${activePage === "vehicles" ? "selected" : ""}`}
+          onClick={() => handlePageClick("vehicles")}
+        >
           <VehicleIcon className="icon"></VehicleIcon>
           <p>Vehicles</p>
         </div>
