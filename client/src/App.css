@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -5,8 +7,19 @@
   text-decoration: none;
 }
 
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 #root {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Inter", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .app-container {
@@ -85,4 +98,115 @@
 .button:hover {
   user-select: none;
   cursor: pointer;
+}
+
+.content-container {
+  width: 100%;
+  background-color: rgb(248, 248, 248);
+  padding: 75px;
+}
+
+/* CALCULATION PAGE */
+
+.calc-title h2 {
+  font-size: 40px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.calc-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+
+.inputs-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.calc-results-card {
+  background-color: white;
+  width: 75%;
+  height: 75%;
+  border-radius: 15px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 75px 25px;
+}
+
+.fuel-types-container {
+  width: 75%;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 20px;
+}
+
+.fuel-card {
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  width: 125px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.fuel-card:hover {
+  user-select: none;
+  cursor: pointer;
+  background-color: rgb(248, 248, 248);
+}
+
+.fuel-card.selected {
+  background-color: rgb(248, 248, 248);
+  border: 2px solid black;
+}
+
+.trip-info-container {
+  display: flex;
+  justify-content: space-between;
+  width: 75%;
+  margin-top: 25px;
+}
+
+.input-container {
+  position: relative;
+  display: inline-block;
+  width: 48%; /* Move the 48% width here so the two inputs sit side-by-side */
+}
+
+.input-container input {
+  width: 100%; /* Let the input fill the 48% wrapper */
+  padding: 10px;
+  padding-right: 75px; /* Keeps text from overlapping the unit */
+  box-sizing: border-box;
+  font-size: 16px;
+  height: 40px; /* Bumped up slightly from 30px so 16px text fits comfortably */
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+.input-container .unit {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  font-size: 14px;
+  pointer-events: none;
+}
+
+.results-container {
+  background-color: rgb(248, 248, 248);
+  width: 75%;
+  height: 35%;
+  border-radius: 15px;
 }
