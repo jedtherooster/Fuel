@@ -173,24 +173,24 @@ input[type="number"] {
 .trip-info-container {
   display: flex;
   justify-content: space-between;
-  width: 75%;
+  width: 68%;
   margin-top: 25px;
 }
 
 .input-container {
   position: relative;
   display: inline-block;
-  width: 48%; /* Move the 48% width here so the two inputs sit side-by-side */
+  width: 48%;
 }
 
 .input-container input {
-  width: 100%; /* Let the input fill the 48% wrapper */
+  width: 100%;
   padding: 10px;
-  padding-right: 75px; /* Keeps text from overlapping the unit */
+  padding-right: 75px;
   box-sizing: border-box;
   font-size: 16px;
-  height: 40px; /* Bumped up slightly from 30px so 16px text fits comfortably */
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  height: 40px;
+  border: 1px solid rgba(0, 0, 0, 0.6);
   border-radius: 10px;
 }
 
@@ -207,6 +207,28 @@ input[type="number"] {
 .results-container {
   background-color: rgb(248, 248, 248);
   width: 75%;
-  height: 35%;
+  height: 40%;
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 100px;
+}
+
+.results-stext {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.required-fuel,
+.price-per-litre,
+.total-cost {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+}
+
+.price-per-litre {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
 }

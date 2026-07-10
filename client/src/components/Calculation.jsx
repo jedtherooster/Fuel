@@ -28,18 +28,31 @@ function Calculation() {
             </div>
           </div>
           <div className="trip-info-container">
-            <div class="input-container">
+            <div className="input-container">
               <input type="number" placeholder="Fuel Economy" step="0.1" />
-              <span class="unit">L/100km</span>
+              <span className="unit">L/100km</span>
             </div>
-            <div class="input-container">
+            <div className="input-container">
               <input type="number" placeholder="Trip Distance" step="0.1" />
-              <span class="unit">km</span>
+              <span className="unit">km</span>
             </div>
           </div>
         </div>
 
-        <div className="results-container"></div>
+        <div className="results-container">
+          <div className="required-fuel">
+            <span className="results-stext">Fuel Required</span>
+            <span>--</span>
+          </div>
+          <div className="price-per-litre">
+            <span className="results-stext">Price Per Litre</span>
+            <span>--</span>
+          </div>
+          <div className="total-cost">
+            <span>Total Cost</span>
+            <span>--</span>
+          </div>
+        </div>
       </div>
     </div>
   );
