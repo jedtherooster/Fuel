@@ -100,12 +100,15 @@ input[type="number"] {
   gap: 1em;
   padding-left: 20px;
   border: none;
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .button:hover {
-  background-color: #e9ebf3;
-  cursor: pointer;
+  filter: invert();
+  transform: translateY(-1px);
 }
 
 .button .icon {
@@ -378,4 +381,105 @@ input[type="number"] {
   .calc-container {
     gap: 24px;
   }
+
+  .stats-title-button-container {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .stats-button {
+    width: 100%;
+    max-width: 100%;
+    justify-content: center;
+  }
+
+  .stats-card {
+    padding: 24px;
+  }
+}
+
+/* STATISTICS PAGE */
+
+.stats-title-button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stats-title h2 {
+  font-size: 36px;
+  font-weight: 600;
+  margin-bottom: 18px;
+}
+
+.stats-button {
+  width: auto;
+  min-width: 180px;
+  padding: 16px 24px;
+  background-color: #000;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-radius: 18px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stats-button:hover {
+  background-color: #222;
+  transform: translateY(-1px);
+}
+
+.stats-button .stats-plus-icon {
+  font-size: 24px;
+}
+
+.stats-button p {
+  font-size: 15px;
+  margin: 0;
+}
+
+.stats-card {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 900px;
+  min-height: 220px;
+  border-radius: 28px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px;
+  gap: 18px;
+  margin-top: 25px;
+  text-align: left;
+}
+
+.stats-card p,
+.stats-card h6 {
+  font-size: 14px;
+  margin-top: 6px;
+  color: #4a4a4a;
+}
+
+.stats-card h6 {
+  font-size: 18px;
+  color: #111;
+  margin: 0;
+}
+
+.stats-card .icon {
+  width: 45px;
+  height: 45px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
