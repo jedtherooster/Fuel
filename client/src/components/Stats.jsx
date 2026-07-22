@@ -1,16 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
+import FuelPurchaseModal from "./FuelPurchaseModal";
 import ArrowUpIcon from "../assets/arrow-up-right.svg?react";
 
 function Statistics() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <>
+      {isModalOpen && (
+        <FuelPurchaseModal onClose={() => setIsModalOpen(false)} />
+      )}
       <div className="card-container">
         <div className="card-title-button-container">
           <div className="card-title">
             <h2>Statistics</h2>
             <p>See how well your vehicle is performing</p>
           </div>
-          <div className="card-button button">
+          <div
+            className="card-button button"
+            onClick={() => setIsModalOpen(true)}
+          >
             <p className="card-plus-icon">+</p>
             <p>Add Purchase</p>
           </div>
