@@ -106,11 +106,6 @@ input[type="number"] {
     box-shadow 0.2s ease;
 }
 
-.button:hover {
-  filter: invert();
-  transform: translateY(-1px);
-}
-
 .button .icon {
   width: 18px;
   height: 18px;
@@ -435,6 +430,11 @@ input[type="number"] {
 .card-button:hover {
   background-color: #222;
   transform: translateY(-1px);
+}
+
+.button:hover {
+  user-select: none;
+  cursor: pointer;
 }
 
 .card-button .card-plus-icon {

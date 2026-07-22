@@ -1,6 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Calculation() {
+  const [fuelPrice, setFuelPrice] = useState({
+    fuel91: 2.81,
+    fuel95: 2.99,
+    fuel98: 3.16,
+    diesel: 2.32,
+  });
+
+  const [activeFuel, setActiveFuel] = useState("fuel91");
+
+  // State for user inputs (stored as strings to allow typing decimals smoothly)
+  const [fuelEconomy, setFuelEconomy] = useState("");
+  const [distance, setDistance] = useState("");
+
+  // Safely parse numbers (defaults to 0 if input is empty or invalid)
+  const economyNum = parseFloat(fuelEconomy) || 0;
+  const distanceNum = parseFloat(distance) || 0;
+  const selectedPrice = fuelPrice[activeFuel] || 0;
+
+  // Mathematical Calculations
+  const fuelRequired = (distanceNum / 100) * economyNum;
+  const totalCost = fuelRequired * selectedPrice;
+
   return (
     <div className="calc-container">
       <div className="calc-title">
@@ -10,47 +32,82 @@ function Calculation() {
       <div className="calc-results-card">
         <div className="inputs-container">
           <div className="fuel-types-container">
-            <div className="fuel-card selected">
+            {/* 91 Fuel Card */}
+            <div
+              className={`fuel-card ${activeFuel === "fuel91" ? "selected" : ""}`}
+              onClick={() => setActiveFuel("fuel91")}
+            >
               <h3>91</h3>
-              <p>0.00</p>
+              <p>${fuelPrice.fuel91.toFixed(2)}</p>
             </div>
-            <div className="fuel-card">
+
+            {/* 95 Fuel Card */}
+            <div
+              className={`fuel-card ${activeFuel === "fuel95" ? "selected" : ""}`}
+              onClick={() => setActiveFuel("fuel95")}
+            >
               <h3>95</h3>
-              <p>0.00</p>
+              <p>${fuelPrice.fuel95.toFixed(2)}</p>
             </div>
-            <div className="fuel-card">
+
+            {/* 98 Fuel Card */}
+            <div
+              className={`fuel-card ${activeFuel === "fuel98" ? "selected" : ""}`}
+              onClick={() => setActiveFuel("fuel98")}
+            >
               <h3>98</h3>
-              <p>0.00</p>
+              <p>${fuelPrice.fuel98.toFixed(2)}</p>
             </div>
-            <div className="fuel-card">
+
+            {/* Diesel Fuel Card */}
+            <div
+              className={`fuel-card ${activeFuel === "diesel" ? "selected" : ""}`}
+              onClick={() => setActiveFuel("diesel")}
+            >
               <h3>Diesel</h3>
-              <p>0.00</p>
+              <p>${fuelPrice.diesel.toFixed(2)}</p>
             </div>
           </div>
+
           <div className="trip-info-container">
             <div className="input-container">
-              <input type="number" placeholder="Fuel Economy" step="0.1" />
+              <input
+                type="number"
+                placeholder="Fuel Economy"
+                step="0.1"
+                value={fuelEconomy}
+                onChange={(e) => setFuelEconomy(e.target.value)}
+              />
               <span className="unit">L/100km</span>
             </div>
             <div className="input-container">
-              <input type="number" placeholder="Trip Distance" step="0.1" />
+              <input
+                type="number"
+                placeholder="Trip Distance"
+                step="0.1"
+                value={distance}
+                onChange={(e) => setDistance(e.target.value)}
+              />
               <span className="unit">km</span>
             </div>
           </div>
         </div>
 
+        {/* Dynamic Results Display */}
         <div className="results-container">
           <div className="required-fuel">
             <span className="results-stext">Fuel Required</span>
-            <span>--</span>
+            <span>
+              {fuelRequired > 0 ? `${fuelRequired.toFixed(2)} L` : "--"}
+            </span>
           </div>
           <div className="price-per-litre">
             <span className="results-stext">Price Per Litre</span>
-            <span>--</span>
+            <span>${selectedPrice.toFixed(2)}</span>
           </div>
           <div className="total-cost">
             <span>Total Cost</span>
-            <span>--</span>
+            <span>{totalCost > 0 ? `$${totalCost.toFixed(2)}` : "$0.00"}</span>
           </div>
         </div>
       </div>
