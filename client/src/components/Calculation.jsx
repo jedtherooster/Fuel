@@ -2,6 +2,14 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function Calculation() {
+  const FUEL_TYPES = [
+    { id: "fuel91", label: "91" },
+    { id: "fuel95", label: "95" },
+    { id: "fuel98", label: "98" },
+    { id: "diesel", label: "Diesel" },
+  ];
+
+  // Hardcoded numbers to fallback on if the server connection fails.
   const [fuelPrice, setFuelPrice] = useState({
     fuel91: 2.81,
     fuel95: 2.99,
@@ -19,8 +27,10 @@ function Calculation() {
 
   useEffect(() => {
     let retryTimer = null;
+    // Flag prevents memory leaks by checking if the component is still rendered before updating state asynchronously
     let isMounted = true;
 
+    // Normalizes different backend payload formats (e.g., "91" vs "fuel91") to prevent UI crashes on key mismatch
     const mapFuelResponse = (apiData, prevPrice) => ({
       fuel91:
         apiData.fuel91 ?? apiData["91"] ?? apiData[91] ?? prevPrice.fuel91,
@@ -29,11 +39,16 @@ function Calculation() {
       fuel98:
         apiData.fuel98 ?? apiData["98"] ?? apiData[98] ?? prevPrice.fuel98,
       diesel:
-        apiData.diesel ?? apiData.Diesel ?? apiData["Diesel"] ?? prevPrice.diesel,
+        apiData.diesel ??
+        apiData.Diesel ??
+        apiData["Diesel"] ??
+        prevPrice.diesel,
     });
 
     const fetchFuelPrices = async (attempt = 1) => {
       if (!isMounted) return;
+
+      // Only show main loading state on initial request so retry attempts happen silently in the background
       if (attempt === 1) {
         setLoading(true);
         setError(null);
@@ -43,11 +58,15 @@ function Calculation() {
         const baseUrl = import.meta.env.VITE_API_URL || "";
         const response = await axios.get(`${baseUrl}/retrieve-fuel-data`);
         if (response?.data) {
-          setFuelPrice((prevPrice) => mapFuelResponse(response.data, prevPrice));
+          // Use functional state updates so we merge against current state safely
+          setFuelPrice((prevPrice) =>
+            mapFuelResponse(response.data, prevPrice),
+          );
           setError(null);
           setLoading(false);
         }
       } catch (fetchError) {
+        // Automatic retry logic: attempts up to 3 times before displaying error state
         if (attempt < 3) {
           retryTimer = window.setTimeout(
             () => fetchFuelPrices(attempt + 1),
@@ -57,6 +76,8 @@ function Calculation() {
         }
 
         if (!isMounted) return;
+
+        // Fallback gracefully to standard hardcoded prices if server connection fails completely
         setError(
           "Unable to load fuel prices from the backend. Using default values.",
         );
@@ -67,6 +88,7 @@ function Calculation() {
 
     fetchFuelPrices();
 
+    // Clean up timeout timers and unmount flags when component unmounts
     return () => {
       isMounted = false;
       if (retryTimer) {
@@ -75,7 +97,7 @@ function Calculation() {
     };
   }, []);
 
-  // Safely parse numbers (defaults to 0 if input is empty or invalid)
+  // Safely parse user input numbers, defaulting to 0 if input is empty, non-numeric, or backspaced
   const economyNum = parseFloat(fuelEconomy) || 0;
   const distanceNum = parseFloat(distance) || 0;
   const selectedPrice = fuelPrice[activeFuel] || 0;
@@ -97,41 +119,22 @@ function Calculation() {
       <div className="calc-results-card">
         <div className="inputs-container">
           <div className="fuel-types-container">
-            {/* 91 Fuel Card */}
-            <div
-              className={`fuel-card ${activeFuel === "fuel91" ? "selected" : ""}`}
-              onClick={() => setActiveFuel("fuel91")}
-            >
-              <h3>91</h3>
-              <p>${fuelPrice.fuel91.toFixed(2)}</p>
-            </div>
+            {/* Array Iteration Loop */}
+            {FUEL_TYPES.map((fuel) => {
+              const isSelected = activeFuel === fuel.id;
+              const price = fuelPrice[fuel.id] || 0;
 
-            {/* 95 Fuel Card */}
-            <div
-              className={`fuel-card ${activeFuel === "fuel95" ? "selected" : ""}`}
-              onClick={() => setActiveFuel("fuel95")}
-            >
-              <h3>95</h3>
-              <p>${fuelPrice.fuel95.toFixed(2)}</p>
-            </div>
-
-            {/* 98 Fuel Card */}
-            <div
-              className={`fuel-card ${activeFuel === "fuel98" ? "selected" : ""}`}
-              onClick={() => setActiveFuel("fuel98")}
-            >
-              <h3>98</h3>
-              <p>${fuelPrice.fuel98.toFixed(2)}</p>
-            </div>
-
-            {/* Diesel Fuel Card */}
-            <div
-              className={`fuel-card ${activeFuel === "diesel" ? "selected" : ""}`}
-              onClick={() => setActiveFuel("diesel")}
-            >
-              <h3>Diesel</h3>
-              <p>${fuelPrice.diesel.toFixed(2)}</p>
-            </div>
+              return (
+                <div
+                  key={fuel.id}
+                  className={`fuel-card ${isSelected ? "selected" : ""}`}
+                  onClick={() => setActiveFuel(fuel.id)}
+                >
+                  <h3>{fuel.label}</h3>
+                  <p>${price.toFixed(2)}</p>
+                </div>
+              );
+            })}
           </div>
 
           <div className="trip-info-container">
