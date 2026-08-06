@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function Calculation() {
@@ -8,12 +8,72 @@ function Calculation() {
     fuel98: 3.16,
     diesel: 2.32,
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const [activeFuel, setActiveFuel] = useState("fuel91");
 
   // State for user inputs (stored as strings to allow typing decimals smoothly)
   const [fuelEconomy, setFuelEconomy] = useState("");
   const [distance, setDistance] = useState("");
+
+  useEffect(() => {
+    let retryTimer = null;
+    let isMounted = true;
+
+    const mapFuelResponse = (apiData, prevPrice) => ({
+      fuel91:
+        apiData.fuel91 ?? apiData["91"] ?? apiData[91] ?? prevPrice.fuel91,
+      fuel95:
+        apiData.fuel95 ?? apiData["95"] ?? apiData[95] ?? prevPrice.fuel95,
+      fuel98:
+        apiData.fuel98 ?? apiData["98"] ?? apiData[98] ?? prevPrice.fuel98,
+      diesel:
+        apiData.diesel ?? apiData.Diesel ?? apiData["Diesel"] ?? prevPrice.diesel,
+    });
+
+    const fetchFuelPrices = async (attempt = 1) => {
+      if (!isMounted) return;
+      if (attempt === 1) {
+        setLoading(true);
+        setError(null);
+      }
+
+      try {
+        const baseUrl = import.meta.env.VITE_API_URL || "";
+        const response = await axios.get(`${baseUrl}/retrieve-fuel-data`);
+        if (response?.data) {
+          setFuelPrice((prevPrice) => mapFuelResponse(response.data, prevPrice));
+          setError(null);
+          setLoading(false);
+        }
+      } catch (fetchError) {
+        if (attempt < 3) {
+          retryTimer = window.setTimeout(
+            () => fetchFuelPrices(attempt + 1),
+            5000,
+          );
+          return;
+        }
+
+        if (!isMounted) return;
+        setError(
+          "Unable to load fuel prices from the backend. Using default values.",
+        );
+        setLoading(false);
+        console.error(fetchError);
+      }
+    };
+
+    fetchFuelPrices();
+
+    return () => {
+      isMounted = false;
+      if (retryTimer) {
+        window.clearTimeout(retryTimer);
+      }
+    };
+  }, []);
 
   // Safely parse numbers (defaults to 0 if input is empty or invalid)
   const economyNum = parseFloat(fuelEconomy) || 0;
@@ -29,6 +89,10 @@ function Calculation() {
       <div className="calc-title">
         <h2>Trip Calculator</h2>
         <p>Calculate fuel costs for your journey</p>
+        {loading && (
+          <p className="status-message">Loading latest fuel prices...</p>
+        )}
+        {error && <p className="status-message error">{error}</p>}
       </div>
       <div className="calc-results-card">
         <div className="inputs-container">
